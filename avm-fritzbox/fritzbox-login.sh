@@ -1,4 +1,5 @@
 #!/bin/bash
+# originally by http://devrandom.de/postshtml/2014-02-04_fritzbox_curl_login_session_id.md.html
 avmfbip="fritz.box"
 avmfbuser=""
 avmfbpwd="12345"
