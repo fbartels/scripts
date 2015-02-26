@@ -1,9 +1,17 @@
 #!/bin/bash
 # originally by http://devrandom.de/postshtml/2014-02-04_fritzbox_curl_login_session_id.md.html
-avmfbip="fritz.box"
-avmfbuser=""
-avmfbpwd="12345"
-avmsidfile="/tmp/avmsid"
+## ip, idfile, password and username can optionally be specified as global variables
+## Example:
+## to get sid of fritz.powerline and store it in /tmp/avmsidpowerine use the following
+# commands before calling fritzbox-login.sh
+# export tempip=fritz.powerline
+# export tempid=/tmp/avmsidpowerline
+# 
+avmfbip=${tempip:-fritz.box}
+avmfbuser=${tempuser:-""}
+avmfbpwd=${temppwd:-"password"}
+avmsidfile=${tempid:-/tmp/avmsid}
+
 
 if [ ! -f $avmsidfile ]; then
 	touch $avmsidfile
