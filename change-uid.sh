@@ -2,7 +2,7 @@
 # Script to change user ids
 
 read -p "Enter username to change: " name
-name=${name:-DEFAULTUSER}
+name=${name:-fbartels}
 
 id $name
 
