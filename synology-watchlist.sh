@@ -10,11 +10,13 @@ echo "Can be called with additional dir to copy files to usb drive after downloa
 echo "Usage: $0 [/path/to/extra/copy]"
 echo "###############################"
 
-WGETCMD="wget -c -nc --no-check-certificate"
+WGETCMD="wget -c -nc --no-verbose --no-check-certificate"
 VIDEODIR=$HOME/Videos
 
+# Files to download. To remove the file afterwards just comment the line
 files="
 http://synology-nas:5005/video/movies/movie-name/movie-name.mkv
+#http://synology-nas:5005/video/movies/other-movie/movie-that-can-be-deleted-locally.mkv
 http://synology-nas:5005/video/tvshows/some-show/Season.04/very-long-episode-title.mp4
 "
 
@@ -37,10 +39,13 @@ for url in $files; do
 	case "$url" in
 	*video/tvshows*)
 		mkdir -p $VIDEODIR/tvshows/"$nameclean" && cd $VIDEODIR/tvshows/"$nameclean"
-		$WGETCMD $shownfo/tvshow.nfo
+		$WGETCMD $shownfo/tvshow.nfo 2>/dev/null
 		;;
 	*video/movies*)
 		mkdir -p $VIDEODIR/movies && cd $VIDEODIR/movies
+		;;
+	*)
+		mkdir -p $VIDEODIR/misc && cd $VIDEODIR/misc
 		;;
 	esac
 	# case statement to remove commented files
@@ -49,6 +54,7 @@ for url in $files; do
 		echo "$filename was commented.. removing it."
 		rm $filename 2>/dev/null
 		rm $filename2.nfo 2>/dev/null
+		rm tvshow.nfo 2>/dev/null
 		;;
 	*)
 		echo "downloading $filename"
@@ -57,9 +63,10 @@ for url in $files; do
 		;;
 	esac
 	cd $VIDEODIR
-	# delete empty folders
-	find . -type d -empty -exec rmdir {} \;
 done
+
+# delete empty folders
+find $VIDEODIR -type d -empty -exec rmdir {} \; 2>/dev/null
 
 if [ ! -z "$1" ] && [ -d "$1" ]; then
 	echo "###############################"
