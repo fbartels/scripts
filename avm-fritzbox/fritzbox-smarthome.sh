@@ -3,13 +3,16 @@
 source $HOME/bin/fritzbox-login.sh
 CURLCMD="curl -s http://$avmfbip/webservices/homeautoswitch.lua"
 
-echo "Run without parameters the script will iterate over all AVM Smarthome devices and ask to toggle them."
-echo "Usage: $0 [AIN-of-device[,secound-AIN] [on/off]}"
 # fritzbox-smarthome.sh 24:65:11:C7:80:BF
 # fritzbox-smarthome.sh 087610154253
 
 # only get ainlist if no first argument was given
 if [ -z $1 ]; then
+	echo "Run without parameters the script will iterate over all AVM Smarthome devices and ask to toggle them."
+	echo "Usage: $0 [AIN-of-device[,secound-AIN] [on/off]}"
+	ainlist=$($CURLCMD"?sid=$avmsid&switchcmd=getswitchlist")
+elif [[ $1 == "list" ]]; then
+	echo "Listing known switches and their states:"
 	ainlist=$($CURLCMD"?sid=$avmsid&switchcmd=getswitchlist")
 else
 	ainlist=$1
@@ -41,6 +44,8 @@ for ain in $ainlist; do
 				exit 1
 			;;
 		esac
+	elif [[ $1 == "list" ]]; then
+		echo "Switch with AIN $ain ($ainname) ist currently $ainstate2."
 	else
 		# else ask interactively to toggle the switch (interactive mode)
 		read -p "Do you want to toggle $ainname ($ain)? Switch is currently $ainstate2. (y/n) " -n 1 -r
