@@ -1,5 +1,6 @@
 #!/bin/bash
 # inspired by https://github.com/Tscherno/Fritzbox.sh
+# script is defunct without WEBCM which was removed with firmware version 6.30
 
 source $HOME/bin/fritzbox-login.sh
 
