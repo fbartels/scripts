@@ -1,6 +1,6 @@
 #!/bin/bash
 #  example script to force the "downgrade" rom webapp 1:1.6 to 2.0
-# @commit this is a test
+
 
 webappversion=$(dpkg-query -W -f='${Version}' zarafa-webapp)
 
